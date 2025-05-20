@@ -3,7 +3,7 @@ pandas
 scikit-learn
 matplotlib
 seaborn
-faiss
+faiss-cpu
 time
 json
 xgboost
