@@ -1,0 +1,650 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>1. Introducción &#8212; Modelos de Regresión</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'intro';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="2. Analisis información del dataset" href="EDA.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Modelos de Regresión</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1 current active">
+                <a class="reference internal" href="#">
+                    1. Introducción
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="EDA.html"><strong>2. Analisis información del dataset</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelosPipeline.html"><strong>3. Modelos Benchmarks</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelosOpt.html"><strong>4. Algoritmos de Optimización</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModeloOriginal.html"><strong>5. Modelo Original</strong></a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fintro.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/intro.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>1. Introducción</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retiros-en-fondos-de-inversion-colectiva-como-fenomeno-economico">1.1. Retiros en Fondos de Inversión Colectiva como Fenómeno Económico</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo-del-estudio">1.2. Objetivo del estudio</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hipotesis-tecnica">1.3. Hipótesis técnica</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enfoque-metodologico">1.4. Enfoque metodológico</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-optimizacion-y-evaluacion-de-modelos-base">1.4.1. Entrenamiento, optimización y evaluación de modelos base</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-ensamblado-propuesto-sqre-withdrawpredictor">1.4.2. Modelo ensamblado propuesto: <strong>SQRE-WithdrawPredictor</strong></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluacion-de-resultados">1.5. Evaluación de resultados</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-para-el-modelo">1.6. Variables para el modelo</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pregunta-central">Pregunta central:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-respuesta">Variable respuesta:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-predictoras">Variables predictoras:</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="introduccion">
+<h1><strong>1. Introducción</strong><a class="headerlink" href="#introduccion" title="Link to this heading">#</a></h1>
+<section id="retiros-en-fondos-de-inversion-colectiva-como-fenomeno-economico">
+<h2>1.1. Retiros en Fondos de Inversión Colectiva como Fenómeno Económico<a class="headerlink" href="#retiros-en-fondos-de-inversion-colectiva-como-fenomeno-economico" title="Link to this heading">#</a></h2>
+<p>Los Fondos de Inversión Colectiva (FIC) y los Fondos de Capital Privado (FCP) son mecanismos que permiten a varios inversionistas reunir recursos para participar en portafolios diversificados. El comportamiento de los inversionistas, particularmente en cuanto a los <strong>retiros o redenciones</strong>, constituye una variable crítica para la estabilidad del fondo. Estos retiros reflejan decisiones motivadas por factores financieros, psicológicos y contextuales que afectan la sostenibilidad del portafolio.</p>
+<p>De acuerdo con la Superintendencia Financiera de Colombia, el valor de un fondo al cierre del día $t$ se calcula con base en los recursos aportados, los rendimientos obtenidos y los gastos incurridos \cite{superfinanciera_valoracion}. A pesar de la disponibilidad de esta información, <strong>la predicción de los retiros diarios sigue siendo un desafío analítico</strong> de alto valor práctico, especialmente para prevenir situaciones de iliquidez.</p>
+</section>
+<section id="objetivo-del-estudio">
+<h2>1.2. Objetivo del estudio<a class="headerlink" href="#objetivo-del-estudio" title="Link to this heading">#</a></h2>
+<p>El presente estudio tiene como objetivo <strong>predecir la cantidad de retiros o redenciones diarias en fondos de inversión</strong>, utilizando un conjunto de variables relacionadas con el comportamiento del fondo y de los inversionistas. La propuesta introduce un enfoque novedoso mediante un <strong>modelo ensamblado basado en regresión cuantil como meta-modelo</strong>, con el fin de capturar patrones no lineales, distribuciones asimétricas y valores extremos.</p>
+</section>
+<section id="hipotesis-tecnica">
+<h2>1.3. Hipótesis técnica<a class="headerlink" href="#hipotesis-tecnica" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p><em>Una arquitectura de stacking que combina modelos base heterogéneos con un meta-modelo de Regresión Cuantil permite mejorar la precisión y robustez en la predicción de retiros financieros, superando a modelos individuales en escenarios de alta varianza y colas pesadas.</em></p>
+</div></blockquote>
+</section>
+<section id="enfoque-metodologico">
+<h2>1.4. Enfoque metodológico<a class="headerlink" href="#enfoque-metodologico" title="Link to this heading">#</a></h2>
+<p>Se implementó un flujo de trabajo estructurado en dos etapas:</p>
+<section id="entrenamiento-optimizacion-y-evaluacion-de-modelos-base">
+<h3>1.4.1. Entrenamiento, optimización y evaluación de modelos base<a class="headerlink" href="#entrenamiento-optimizacion-y-evaluacion-de-modelos-base" title="Link to this heading">#</a></h3>
+<p>Se entrenaron y evaluaron seis modelos de regresión:</p>
+<ul class="simple">
+<li><p>Regresión Lineal</p></li>
+<li><p>Ridge</p></li>
+<li><p>Lasso</p></li>
+<li><p>KNN</p></li>
+<li><p>Random Forest</p></li>
+<li><p>XGBoost</p></li>
+</ul>
+<p>Para mejorar el rendimiento y la precisión, se incorporaron técnicas de <strong>optimización algorítmica</strong> específicas para cada tipo de modelo:</p>
+<ul class="simple">
+<li><p>En los modelos basados en regresión lineal (Lineal, Ridge, Lasso), se utilizó el solver <code class="docutils literal notranslate"><span class="pre">'saga'</span></code> para mayor eficiencia en presencia de regularización.</p></li>
+<li><p>Para KNN, se compararon técnicas de búsqueda optimizada como <strong>Ball Trees</strong> y <strong>KD-Trees</strong>, además de una implementación acelerada con <strong>FAISS</strong>, que permitió reducir el tiempo de inferencia en más de un 98%.</p></li>
+<li><p>En el caso de XGBoost, se empleó el método de construcción de árboles <strong><code class="docutils literal notranslate"><span class="pre">hist</span></code></strong>, que acelera la búsqueda de divisiones, y se incorporó <strong>early stopping</strong> para evitar sobreajuste mediante detención temprana del entrenamiento.</p></li>
+<li><p>Random Forest fue optimizado mediante ajuste del número de árboles, la profundidad máxima y la selección de características por división.</p></li>
+</ul>
+<p>Cada modelo fue ajustado utilizando una <strong>búsqueda aleatoria de hiperparámetros (<code class="docutils literal notranslate"><span class="pre">RandomizedSearchCV</span></code>)</strong> con validación cruzada ($k = 3$), priorizando la métrica $R^2$ como criterio de evaluación.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fragmento clave del entrenamiento</span>
+<span class="k">if</span> <span class="n">nombre_modelo</span> <span class="ow">in</span> <span class="n">modelos_con_escalado</span><span class="p">:</span>
+    <span class="n">pasos</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()))</span>
+<span class="n">pasos</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="n">modelo</span><span class="p">))</span>
+
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">pasos</span><span class="p">)</span>
+
+<span class="n">search</span> <span class="o">=</span> <span class="n">RandomizedSearchCV</span><span class="p">(</span>
+    <span class="n">pipeline</span><span class="p">,</span>
+    <span class="n">param_distributions</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+    <span class="n">n_iter</span><span class="o">=</span><span class="n">n_iter</span><span class="p">,</span>
+    <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span>
+    <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;r2&#39;</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="modelo-ensamblado-propuesto-sqre-withdrawpredictor">
+<h3>1.4.2. Modelo ensamblado propuesto: <strong>SQRE-WithdrawPredictor</strong><a class="headerlink" href="#modelo-ensamblado-propuesto-sqre-withdrawpredictor" title="Link to this heading">#</a></h3>
+<p>Posterior a la evaluación individual, se seleccionaron los dos modelos con mejor desempeño (Random Forest y XGBoost), los cuales fueron integrados mediante un <strong>modelo de stacking</strong> cuyo meta-modelo es una <strong>Regresión Cuantil</strong> enfocada en la mediana (cuantil $q = 0.5$).</p>
+<p>Este modelo, denominado <strong>SQRE-WithdrawPredictor</strong>, busca no sólo minimizar errores promedio, sino también capturar la estructura de colas y la variabilidad condicional, común en los retiros financieros masivos.</p>
+</section>
+</section>
+<section id="evaluacion-de-resultados">
+<h2>1.5. Evaluación de resultados<a class="headerlink" href="#evaluacion-de-resultados" title="Link to this heading">#</a></h2>
+<p>Los modelos fueron evaluados según las siguientes métricas:</p>
+<ul class="simple">
+<li><p>$\textbf{RMSE}$: Raíz del error cuadrático medio</p></li>
+<li><p>$\textbf{MAE}$: Error absoluto medio</p></li>
+<li><p>$\textbf{MAPE}$: Error porcentual absoluto medio</p></li>
+<li><p>$\textbf{R^2}$: Coeficiente de determinación</p></li>
+<li><p>$\textbf{Jarque-Bera}$: Normalidad de los residuos</p></li>
+<li><p>$\textbf{Jlung-Box}$: Autocorrelación de residuos</p></li>
+</ul>
+<p>Los resultados obtenidos con el modelo original mostraron un desempeño consistente tanto en el conjunto de entrenamiento como en el de prueba. En entrenamiento, el modelo alcanzó un $R^2$ de 0.79. En prueba, el rendimiento se mantuvo estable, con un $R^2$ de 0.77, indicando buena capacidad predictiva y generalización para la predicción de retiros financieros diarios.</p>
+</section>
+<section id="variables-para-el-modelo">
+<h2>1.6. Variables para el modelo<a class="headerlink" href="#variables-para-el-modelo" title="Link to this heading">#</a></h2>
+<section id="pregunta-central">
+<h3>Pregunta central:<a class="headerlink" href="#pregunta-central" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>\textit{”¿Cómo influyen los aportes recibidos, el valor del fondo, el número de inversionistas y el tipo de entidad en la cantidad de retiros/redenciones realizadas?”}</p>
+</div></blockquote>
+</section>
+<section id="variable-respuesta">
+<h3>Variable respuesta:<a class="headerlink" href="#variable-respuesta" title="Link to this heading">#</a></h3>
+<p><strong>$\textbf{RETIROS_REDENCIONES}$</strong></p>
+</section>
+<section id="variables-predictoras">
+<h3>Variables predictoras:<a class="headerlink" href="#variables-predictoras" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Nombre de Variable</p></th>
+<th class="head"><p>Descripción</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>APORTES_RECIBIDOS</p></td>
+<td><p>Cantidad de dinero ingresado</p></td>
+</tr>
+<tr class="row-odd"><td><p>PRECIERRE_FONDO_DIA_T</p></td>
+<td><p>Precio de cierre de la unidad del fondo</p></td>
+</tr>
+<tr class="row-even"><td><p>NUMERO_INVERSIONISTAS</p></td>
+<td><p>Número de inversionistas del fondo</p></td>
+</tr>
+<tr class="row-odd"><td><p>TIPO_ENTIDAD</p></td>
+<td><p>Tipo de entidad financiera</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Estas variables se consideraron relevantes para modelar el comportamiento colectivo de los inversionistas y predecir dinámicamente los flujos de salida.</p>
+</section>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="EDA.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><strong>2. Analisis información del dataset</strong></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retiros-en-fondos-de-inversion-colectiva-como-fenomeno-economico">1.1. Retiros en Fondos de Inversión Colectiva como Fenómeno Económico</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo-del-estudio">1.2. Objetivo del estudio</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hipotesis-tecnica">1.3. Hipótesis técnica</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enfoque-metodologico">1.4. Enfoque metodológico</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-optimizacion-y-evaluacion-de-modelos-base">1.4.1. Entrenamiento, optimización y evaluación de modelos base</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-ensamblado-propuesto-sqre-withdrawpredictor">1.4.2. Modelo ensamblado propuesto: <strong>SQRE-WithdrawPredictor</strong></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluacion-de-resultados">1.5. Evaluación de resultados</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-para-el-modelo">1.6. Variables para el modelo</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pregunta-central">Pregunta central:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-respuesta">Variable respuesta:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-predictoras">Variables predictoras:</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Daniella Guerra y Tawny Torres
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1563 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>2. Analisis información del dataset &#8212; Modelos de Regresión</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'EDA';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="3. Modelos Benchmarks" href="ModelosPipeline.html" />
+    <link rel="prev" title="1. Introducción" href="intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Modelos de Regresión</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    1. Introducción
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>2. Analisis información del dataset</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelosPipeline.html"><strong>3. Modelos Benchmarks</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelosOpt.html"><strong>4. Algoritmos de Optimización</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModeloOriginal.html"><strong>5. Modelo Original</strong></a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2FEDA.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/EDA.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>2. Analisis información del dataset</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset"><strong>2.1. Dataset</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identificacion-na-s"><strong>2.1.1. Identificación NA’s</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#informacion-general"><strong>2.1.2. Información General</strong></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-variables"><strong>2.2. Análisis Variables</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tipo-de-entidad"><strong>2.2.1. Tipo de Entidad</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#principal-compartimento"><strong>2.2.2. Principal Compartimento</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rendimientos-abonados"><strong>2.2.3. Rendimientos Abonados</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#subtipo-de-negocio"><strong>2.2.4. Subtipo  de Negocio</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#valor-del-fondo-al-cerrar-en-el-dia-t"><strong>2.2.5. Valor Del Fondo al Cerrar en el Dia T</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distribucion-de-rentalidades-diaria-mensual-semestral-anual"><strong>2.2.6. Distribución de Rentalidades (<em>Diaria, Mensual, Semestral, Anual</em>)</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#total-de-retiros-y-redenciones-por-tipo-de-entidad"><strong>2.2.7. Total de Retiros y Redenciones por Tipo de Entidad</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aportes-recibidos-por-subtipo-de-negocio"><strong>2.2.8. Aportes Recibidos por Subtipo de Negocio</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relacion-entre-valor-total-del-fondo-al-cierre-del-dia-t-y-precio-de-cierre-del-fondo-en-el-dia-t"><strong>2.2.9. Relación entre Valor total del fondo al cierre del día T y Precio de cierre del fondo en el día T</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retiros-y-redenciones-por-mes"><strong>2.2.10. Retiros y Redenciones por Mes</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#numero-de-inversionistas-por-subtipo"><strong>2.2.11. Numero de Inversionistas por Subtipo</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#valor-del-fondo-al-cierre-del-dia-t-por-mes"><strong>2.2.12. Valor del Fondo al cierre del dia T por Mes</strong></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-para-el-modelo"><strong>2.3. Variables para el Modelo</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#revision-de-multicolinealidad"><strong>2.3.1. Revisión de Multicolinealidad</strong></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Librerias Importadas</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="analisis-informacion-del-dataset">
+<h1><strong>2. Analisis información del dataset</strong><a class="headerlink" href="#analisis-informacion-del-dataset" title="Link to this heading">#</a></h1>
+<section id="dataset">
+<h2><strong>2.1. Dataset</strong><a class="headerlink" href="#dataset" title="Link to this heading">#</a></h2>
+<p>Importamos la base de datos, la cual fue previamente filtrada por medio de la variable objetivo (<code class="docutils literal notranslate"><span class="pre">RETIROS_REDENCIONES</span></code>), donde se excluyeron los valores negativos y aquellos iguales a cero.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ruta al archivo CSV</span>
+<span class="n">rentacsv</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;C:\Users\TAWTOCA\OneDrive - Universidad del Norte\Documentos\Visual Files\Rentabilidad_filtrado.csv&#39;</span>
+
+<span class="c1"># Importar el archivo CSV a un DataFrame</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">rentacsv</span><span class="p">)</span>
+
+<span class="c1"># Mostrar las primeras filas del DataFrame</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  FECHA_CORTE  TIPO_ENTIDAD                NOMBRE_TIPO_ENTIDAD  \
+0  06/07/2020             5             SF-SOCIEDAD FIDUCIARIA   
+1  23/08/2023             5             SF-SOCIEDAD FIDUCIARIA   
+2  31/05/2024            85  COMISIONISTAS DE BOLSA DE VALORES   
+3  09/09/2022             5             SF-SOCIEDAD FIDUCIARIA   
+4  01/10/2022             5             SF-SOCIEDAD FIDUCIARIA   
+
+   CODIGO_ENTIDAD                                   NOMBRE_ENTIDAD  \
+0              39                                 Fiduagraria S.A.   
+1              39                                 Fiduagraria S.A.   
+2               3  Acciones Y Valores S.A.  Comisionistas De Bolsa   
+3              40                                       Fiducoldex   
+4               3   Bbva Asset Management S.A. Sociedad Fiduciaria   
+
+   TIPO_NEGOCIO         NOMBRE_TIPO_PATRIMONIO  SUBTIPO_NEGOCIO  \
+0             9  FONDOS DE INVERSIÓN COLECTIVA                1   
+1             9  FONDOS DE INVERSIÓN COLECTIVA                1   
+2             9  FONDOS DE INVERSIÓN COLECTIVA                3   
+3             9  FONDOS DE INVERSIÓN COLECTIVA                1   
+4             9  FONDOS DE INVERSIÓN COLECTIVA                1   
+
+  NOMBRE_SUBTIPO_PATRIMONIO  CODIGO_NEGOCIO  ...  \
+0       FIC DE TIPO GENERAL           69537  ...   
+1       FIC DE TIPO GENERAL           69537  ...   
+2         FIC INMOBILIARIAS           90278  ...   
+3       FIC DE TIPO GENERAL           11149  ...   
+4       FIC DE TIPO GENERAL           87342  ...   
+
+  VALOR_UNIDAD_OPERACIONES_DIA_T  APORTES_RECIBIDOS  RETIROS_REDENCIONES  \
+0                   12889.679298       6.293444e+07         4.416386e+07   
+1                   15457.741094       1.058423e+09         1.491934e+08   
+2                   13373.374363       0.000000e+00         6.300000e-01   
+3                   19578.174949       4.757419e+07         1.352728e+08   
+4                   11265.384058       0.000000e+00         3.080000e+00   
+
+   ANULACIONES  VALOR_FONDO_CIERRE_DIA_T  NUMERO_INVERSIONISTAS  \
+0          0.0              2.959867e+08                    2.0   
+1    5388920.8              3.469729e+11                    9.0   
+2          0.0              7.468954e+10                 1220.0   
+3          0.0              2.549026e+10                   90.0   
+4          0.0              9.718136e+10                27052.0   
+
+   RENTABILIDAD_DIARIA  RENTABILIDAD_MENSUAL  RENTABILIDAD_SEMESTRAL  \
+0             6.830705              0.799843                3.053366   
+1            16.385587              9.782180               12.968587   
+2            13.696138              9.459348                5.120448   
+3            12.734325              8.892954                5.016920   
+4            13.098794             10.536135                6.619211   
+
+   RENTABILIDAD_ANUAL  
+0            2.881620  
+1           12.937892  
+2            4.883773  
+3            3.043771  
+4            4.480745  
+
+[5 rows x 26 columns]
+</pre></div>
+</div>
+</div>
+</div>
+<section id="identificacion-na-s">
+<h3><strong>2.1.1. Identificación NA’s</strong><a class="headerlink" href="#identificacion-na-s" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">yticklabels</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Distribución de valores nulos en las variables&quot;</span><span class="p">,</span>
+          <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Variables&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/2840c9fcd70c55952e0e023ede9d7ff94d3c3b2efc9190fa8f81daa1523af82c.png" src="_images/2840c9fcd70c55952e0e023ede9d7ff94d3c3b2efc9190fa8f81daa1523af82c.png" />
+</div>
+</div>
+<p>Identificamos si hay datos faltantes en la base de datos para proceder a partir de ahí.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FECHA_CORTE                                         0
+TIPO_ENTIDAD                                        0
+NOMBRE_TIPO_ENTIDAD                                 0
+CODIGO_ENTIDAD                                      0
+NOMBRE_ENTIDAD                                      0
+TIPO_NEGOCIO                                        0
+NOMBRE_TIPO_PATRIMONIO                              0
+SUBTIPO_NEGOCIO                                     0
+NOMBRE_SUBTIPO_PATRIMONIO                           0
+CODIGO_NEGOCIO                                      0
+NOMBRE_PATRIMONIO                                   0
+PRINCIPAL_COMPARTIMENTO                             0
+TIPO_PARTICIPACION                                  0
+RENDIMIENTOS_ABONADOS                               0
+PRECIERRE_FONDO_DIA_T                               0
+NUMERO_UNIDADES_FONDO_CIERRE_OPER_DIA_T_ANTERIOR    0
+VALOR_UNIDAD_OPERACIONES_DIA_T                      0
+APORTES_RECIBIDOS                                   0
+RETIROS_REDENCIONES                                 0
+ANULACIONES                                         0
+VALOR_FONDO_CIERRE_DIA_T                            0
+NUMERO_INVERSIONISTAS                               0
+RENTABILIDAD_DIARIA                                 0
+RENTABILIDAD_MENSUAL                                0
+RENTABILIDAD_SEMESTRAL                              0
+RENTABILIDAD_ANUAL                                  0
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="informacion-general">
+<h3><strong>2.1.2. Información General</strong><a class="headerlink" href="#informacion-general" title="Link to this heading">#</a></h3>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Al momento de graficar algunas variables se utilizó tranformación logarítmica en los datos, debido a que el gran rango de los mismos dificultaba la visualización de los mismos.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>TIPO_ENTIDAD</th>
+      <th>CODIGO_ENTIDAD</th>
+      <th>TIPO_NEGOCIO</th>
+      <th>SUBTIPO_NEGOCIO</th>
+      <th>CODIGO_NEGOCIO</th>
+      <th>PRINCIPAL_COMPARTIMENTO</th>
+      <th>TIPO_PARTICIPACION</th>
+      <th>RENDIMIENTOS_ABONADOS</th>
+      <th>PRECIERRE_FONDO_DIA_T</th>
+      <th>NUMERO_UNIDADES_FONDO_CIERRE_OPER_DIA_T_ANTERIOR</th>
+      <th>VALOR_UNIDAD_OPERACIONES_DIA_T</th>
+      <th>APORTES_RECIBIDOS</th>
+      <th>RETIROS_REDENCIONES</th>
+      <th>ANULACIONES</th>
+      <th>VALOR_FONDO_CIERRE_DIA_T</th>
+      <th>NUMERO_INVERSIONISTAS</th>
+      <th>RENTABILIDAD_DIARIA</th>
+      <th>RENTABILIDAD_MENSUAL</th>
+      <th>RENTABILIDAD_SEMESTRAL</th>
+      <th>RENTABILIDAD_ANUAL</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>634999.000000</td>
+      <td>634999.000000</td>
+      <td>634999.0</td>
+      <td>634999.000000</td>
+      <td>634999.000000</td>
+      <td>634999.000000</td>
+      <td>634999.000000</td>
+      <td>6.349990e+05</td>
+      <td>6.349990e+05</td>
+      <td>6.349990e+05</td>
+      <td>6.349990e+05</td>
+      <td>6.349990e+05</td>
+      <td>6.349990e+05</td>
+      <td>6.349990e+05</td>
+      <td>6.349990e+05</td>
+      <td>634999.000000</td>
+      <td>6.349990e+05</td>
+      <td>6.349990e+05</td>
+      <td>6.349990e+05</td>
+      <td>634999.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>24.940435</td>
+      <td>26.422873</td>
+      <td>9.0</td>
+      <td>1.139347</td>
+      <td>38445.295254</td>
+      <td>1.005472</td>
+      <td>599.404374</td>
+      <td>5.239969e+07</td>
+      <td>3.028370e+11</td>
+      <td>1.040848e+09</td>
+      <td>1.131988e+05</td>
+      <td>1.189552e+10</td>
+      <td>1.211972e+10</td>
+      <td>-9.213148e+07</td>
+      <td>3.025168e+11</td>
+      <td>8064.004734</td>
+      <td>2.207595e+25</td>
+      <td>2.344686e+20</td>
+      <td>2.226061e+02</td>
+      <td>7.526769</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>34.620456</td>
+      <td>18.471252</td>
+      <td>0.0</td>
+      <td>0.731533</td>
+      <td>29837.322723</td>
+      <td>0.073773</td>
+      <td>135.954681</td>
+      <td>2.427274e+09</td>
+      <td>9.732071e+11</td>
+      <td>5.486411e+11</td>
+      <td>9.326970e+05</td>
+      <td>4.482245e+10</td>
+      <td>4.465816e+10</td>
+      <td>5.677127e+09</td>
+      <td>9.733642e+11</td>
+      <td>48017.189962</td>
+      <td>9.705801e+27</td>
+      <td>1.864438e+23</td>
+      <td>1.057111e+05</td>
+      <td>779.183114</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>5.000000</td>
+      <td>3.000000</td>
+      <td>9.0</td>
+      <td>1.000000</td>
+      <td>2713.000000</td>
+      <td>1.000000</td>
+      <td>5.000000</td>
+      <td>-6.210441e+11</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>-2.971900e-02</td>
+      <td>5.000000e-03</td>
+      <td>-3.100000e+12</td>
+      <td>0.000000e+00</td>
+      <td>0.000000</td>
+      <td>-6.296981e+02</td>
+      <td>-1.000000e+02</td>
+      <td>-1.000000e+02</td>
+      <td>-100.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>5.000000</td>
+      <td>16.000000</td>
+      <td>9.0</td>
+      <td>1.000000</td>
+      <td>10779.000000</td>
+      <td>1.000000</td>
+      <td>503.000000</td>
+      <td>7.201290e+05</td>
+      <td>2.143412e+10</td>
+      <td>1.043770e+06</td>
+      <td>1.029401e+04</td>
+      <td>1.463952e+05</td>
+      <td>3.392000e+07</td>
+      <td>0.000000e+00</td>
+      <td>2.108223e+10</td>
+      <td>33.000000</td>
+      <td>1.526900e+00</td>
+      <td>2.803779e+00</td>
+      <td>2.761964e+00</td>
+      <td>2.458099</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>5.000000</td>
+      <td>22.000000</td>
+      <td>9.0</td>
+      <td>1.000000</td>
+      <td>29133.000000</td>
+      <td>1.000000</td>
+      <td>512.000000</td>
+      <td>9.900754e+06</td>
+      <td>7.708419e+10</td>
+      <td>4.709506e+06</td>
+      <td>1.350596e+04</td>
+      <td>4.558728e+08</td>
+      <td>6.971819e+08</td>
+      <td>0.000000e+00</td>
+      <td>7.661395e+10</td>
+      <td>239.000000</td>
+      <td>5.693763e+00</td>
+      <td>5.383520e+00</td>
+      <td>5.119354e+00</td>
+      <td>4.691018</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>5.000000</td>
+      <td>34.000000</td>
+      <td>9.0</td>
+      <td>1.000000</td>
+      <td>59304.000000</td>
+      <td>1.000000</td>
+      <td>800.000000</td>
+      <td>4.794616e+07</td>
+      <td>2.676256e+11</td>
+      <td>1.913951e+07</td>
+      <td>2.325851e+04</td>
+      <td>6.565094e+09</td>
+      <td>6.763442e+09</td>
+      <td>0.000000e+00</td>
+      <td>2.671632e+11</td>
+      <td>1588.000000</td>
+      <td>1.115160e+01</td>
+      <td>9.649517e+00</td>
+      <td>9.467989e+00</td>
+      <td>9.112921</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>87.000000</td>
+      <td>97.000000</td>
+      <td>9.0</td>
+      <td>7.000000</td>
+      <td>123763.000000</td>
+      <td>2.000000</td>
+      <td>852.000000</td>
+      <td>4.422857e+11</td>
+      <td>2.268985e+13</td>
+      <td>3.090381e+14</td>
+      <td>4.073606e+08</td>
+      <td>1.013510e+13</td>
+      <td>1.013500e+13</td>
+      <td>4.572483e+11</td>
+      <td>2.269085e+13</td>
+      <td>764509.000000</td>
+      <td>6.096438e+30</td>
+      <td>1.485708e+26</td>
+      <td>5.813969e+07</td>
+      <td>424956.257907</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>FECHA_CORTE</th>
+      <th>NOMBRE_TIPO_ENTIDAD</th>
+      <th>NOMBRE_ENTIDAD</th>
+      <th>NOMBRE_TIPO_PATRIMONIO</th>
+      <th>NOMBRE_SUBTIPO_PATRIMONIO</th>
+      <th>NOMBRE_PATRIMONIO</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>634999</td>
+      <td>634999</td>
+      <td>634999</td>
+      <td>634999</td>
+      <td>634999</td>
+      <td>634999</td>
+    </tr>
+    <tr>
+      <th>unique</th>
+      <td>3337</td>
+      <td>3</td>
+      <td>46</td>
+      <td>1</td>
+      <td>5</td>
+      <td>780</td>
+    </tr>
+    <tr>
+      <th>top</th>
+      <td>23/12/2024</td>
+      <td>SF-SOCIEDAD FIDUCIARIA</td>
+      <td>Alianza Fiduciaria S.A.</td>
+      <td>FONDOS DE INVERSIÓN COLECTIVA</td>
+      <td>FIC DE TIPO GENERAL</td>
+      <td>FONDO ABIERTO ALIANZA</td>
+    </tr>
+    <tr>
+      <th>freq</th>
+      <td>370</td>
+      <td>476815</td>
+      <td>63293</td>
+      <td>634999</td>
+      <td>595345</td>
+      <td>26641</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Seleccionar solo las columnas numéricas</span>
+<span class="n">df_numeric</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;float64&quot;</span><span class="p">,</span> <span class="s2">&quot;int64&quot;</span><span class="p">])</span>
+
+<span class="c1"># Calcular la matriz de correlación</span>
+<span class="n">corr</span> <span class="o">=</span> <span class="n">df_numeric</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+
+<span class="c1"># Crear el mapa de calor</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;.2f&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;coolwarm&quot;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Título y visualización</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Mapa de Correlación entre Variables&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/ed6b9b5121f10bf02592f35908effdea1a302066f67a2925a98ae64d380c3e5e.png" src="_images/ed6b9b5121f10bf02592f35908effdea1a302066f67a2925a98ae64d380c3e5e.png" />
+</div>
+</div>
+<p>En base al mapa de correlación, eliminamos aquellas variables que no aportarian mucho para el modelo de regresión.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns_to_drop</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CODIGO_ENTIDAD&#39;</span><span class="p">,</span><span class="s1">&#39;NOMBRE_ENTIDAD&#39;</span><span class="p">,</span><span class="s1">&#39;ANULACIONES&#39;</span><span class="p">,</span> <span class="s1">&#39;TIPO_PARTICIPACION&#39;</span><span class="p">,</span> <span class="s1">&#39;NOMBRE_TIPO_PATRIMONIO&#39;</span><span class="p">,</span><span class="s1">&#39;NOMBRE_PATRIMONIO&#39;</span><span class="p">,</span> <span class="s1">&#39;CODIGO_NEGOCIO&#39;</span><span class="p">,</span> <span class="s1">&#39;TIPO_NEGOCIO&#39;</span><span class="p">,</span><span class="s1">&#39;NUMERO_UNIDADES_FONDO_CIERRE_OPER_DIA_T_ANTERIOR&#39;</span><span class="p">,</span><span class="s1">&#39;VALOR_UNIDAD_OPERACIONES_DIA_T&#39;</span><span class="p">]</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">columns_to_drop</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  FECHA_CORTE  TIPO_ENTIDAD                NOMBRE_TIPO_ENTIDAD  \
+0  2020-07-06             5             SF-SOCIEDAD FIDUCIARIA   
+1  2023-08-23             5             SF-SOCIEDAD FIDUCIARIA   
+2  2024-05-31            85  COMISIONISTAS DE BOLSA DE VALORES   
+3  2022-09-09             5             SF-SOCIEDAD FIDUCIARIA   
+4  2022-10-01             5             SF-SOCIEDAD FIDUCIARIA   
+
+   SUBTIPO_NEGOCIO NOMBRE_SUBTIPO_PATRIMONIO  PRINCIPAL_COMPARTIMENTO  \
+0                1       FIC DE TIPO GENERAL                        1   
+1                1       FIC DE TIPO GENERAL                        1   
+2                3         FIC INMOBILIARIAS                        1   
+3                1       FIC DE TIPO GENERAL                        1   
+4                1       FIC DE TIPO GENERAL                        1   
+
+   RENDIMIENTOS_ABONADOS  PRECIERRE_FONDO_DIA_T  APORTES_RECIBIDOS  \
+0           5.017933e+04           2.772161e+08       6.293444e+07   
+1           1.438341e+08           3.460583e+11       1.058423e+09   
+2           2.626139e+07           7.468954e+10       0.000000e+00   
+3           8.398265e+06           2.557796e+10       4.757419e+07   
+4           3.276763e+07           9.718136e+10       0.000000e+00   
+
+   RETIROS_REDENCIONES  VALOR_FONDO_CIERRE_DIA_T  NUMERO_INVERSIONISTAS  \
+0         4.416386e+07              2.959867e+08                    2.0   
+1         1.491934e+08              3.469729e+11                    9.0   
+2         6.300000e-01              7.468954e+10                 1220.0   
+3         1.352728e+08              2.549026e+10                   90.0   
+4         3.080000e+00              9.718136e+10                27052.0   
+
+   RENTABILIDAD_DIARIA  RENTABILIDAD_MENSUAL  RENTABILIDAD_SEMESTRAL  \
+0             6.830705              0.799843                3.053366   
+1            16.385587              9.782180               12.968587   
+2            13.696138              9.459348                5.120448   
+3            12.734325              8.892954                5.016920   
+4            13.098794             10.536135                6.619211   
+
+   RENTABILIDAD_ANUAL  log_rendi  log_valor   AÑO  MES  
+0            2.881620  10.823378  19.505825  2020    7  
+1           12.937892  18.784171  26.572513  2023    8  
+2            4.883773  17.083610  25.036606  2024    5  
+3            3.043771  15.943536  23.961562  2022    9  
+4            4.480745  17.304952  25.299845  2022   10  
+</pre></div>
+</div>
+</div>
+</div>
+<p>De esta manera, en vez de trabajar con las 26 variables de la base de datos estamos trabajando con 15.</p>
+</section>
+</section>
+<section id="analisis-variables">
+<h2><strong>2.2. Análisis Variables</strong><a class="headerlink" href="#analisis-variables" title="Link to this heading">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>En algunas gráficas se utlizó la escala en el eje <span class="math notranslate nohighlight">\(y\)</span> (o <span class="math notranslate nohighlight">\(x\)</span>) para mejorar la visualización de los datos.</p>
+</div>
+<section id="tipo-de-entidad">
+<h3><strong>2.2.1. Tipo de Entidad</strong><a class="headerlink" href="#tipo-de-entidad" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
+
+<span class="c1"># Contar las frecuencias y calcular los porcentajes</span>
+<span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;NOMBRE_TIPO_ENTIDAD&quot;</span><span class="p">],</span> <span class="n">order</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;NOMBRE_TIPO_ENTIDAD&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">)</span>
+
+<span class="c1"># Agregar etiquetas con porcentajes automáticamente</span>
+<span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">containers</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">bar_label</span><span class="p">(</span><span class="n">container</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">(</span><span class="n">x</span><span class="o">/</span><span class="n">total</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># Personalización</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Distribución de Tipo de Entidad (%)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Porcentaje&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Entidad&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/547a596c6be6712a3aea6f603d8730261775ca0448aca4fcefe3bbf40e5b8366.png" src="_images/547a596c6be6712a3aea6f603d8730261775ca0448aca4fcefe3bbf40e5b8366.png" />
+</div>
+</div>
+<p>Vemos que la mayoria se encuentra en las sociedades fiduciarias, seguidas por las comisionistas de bolsa de valores, mientras que las sociedades administradoras de inversión tienen una participación mínima.</p>
+</section>
+<section id="principal-compartimento">
+<h3><strong>2.2.2. Principal Compartimento</strong><a class="headerlink" href="#principal-compartimento" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sex_count</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;PRINCIPAL_COMPARTIMENTO&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span><span class="n">sex_count</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">sex_count</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">autopct</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%1.1f%%</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">startangle</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;darkcyan&quot;</span><span class="p">,</span> <span class="s2">&quot;steelblue&quot;</span><span class="p">]</span> <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Distribución Compartimento Principal&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;PRINCIPAL_COMPARTIMENTO&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;PRINCIPAL_COMPARTIMENTO&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/730111e6488aec4ece8a128d48bdfe28bc66771dc3f460785402e51d75769e71.png" src="_images/730111e6488aec4ece8a128d48bdfe28bc66771dc3f460785402e51d75769e71.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PRINCIPAL_COMPARTIMENTO
+1    99.452755
+2     0.547245
+Name: proportion, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Esto nos muestra que el 99.5% de los fondos no tienen compartimentos (valor 1, única unidad), mientras que el 0.5% sí están divididos en compartimentos (valor 2).</p>
+</section>
+<section id="rendimientos-abonados">
+<h3><strong>2.2.3. Rendimientos Abonados</strong><a class="headerlink" href="#rendimientos-abonados" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;log_rendi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;RENDIMIENTOS_ABONADOS&quot;</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;log_rendi&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">(),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;seagreen&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Log(Rendimientos Abonados + 1 )&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Frecuencia&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Dsitrbución de Rendimientos Abonados&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/0f02de8d45133f9e7510ba7f552ac8b790226b34293ada8daf1cf281acb3cc4e.png" src="_images/0f02de8d45133f9e7510ba7f552ac8b790226b34293ada8daf1cf281acb3cc4e.png" />
+</div>
+</div>
+<p>Aqui se muestra la distribución de los rendimientos abonados aplicando una transformación logarítmica.</p>
+</section>
+<section id="subtipo-de-negocio">
+<h3><strong>2.2.4. Subtipo  de Negocio</strong><a class="headerlink" href="#subtipo-de-negocio" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
+
+<span class="c1"># Contar las frecuencias y calcular los porcentajes</span>
+<span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;NOMBRE_SUBTIPO_PATRIMONIO&quot;</span><span class="p">],</span> <span class="n">order</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;NOMBRE_SUBTIPO_PATRIMONIO&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">)</span>
+
+<span class="c1"># Agregar etiquetas con porcentajes automáticamente</span>
+<span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">containers</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">bar_label</span><span class="p">(</span><span class="n">container</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">(</span><span class="n">x</span><span class="o">/</span><span class="n">total</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># Personalización</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Distribución de Subtipo de Negocio (%)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Porcentaje&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Subtipo Negocio&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/78a7fc89e3a8465ef9cbd96277593f1ea717ea53604d63acb3a5d7e49940b079.png" src="_images/78a7fc89e3a8465ef9cbd96277593f1ea717ea53604d63acb3a5d7e49940b079.png" />
+</div>
+</div>
+<p>El gráfico muestra que la mayoría de los fondos pertenecen al subtipo “FIC de Tipo General” (66.9%), seguido por “Fondos de Capital Privado” (27.9%), mientras que los demás subtipos tienen una representación muy baja.</p>
+</section>
+<section id="valor-del-fondo-al-cerrar-en-el-dia-t">
+<h3><strong>2.2.5. Valor Del Fondo al Cerrar en el Dia T</strong><a class="headerlink" href="#valor-del-fondo-al-cerrar-en-el-dia-t" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;log_valor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;VALOR_FONDO_CIERRE_DIA_T&quot;</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;log_valor&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">(),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;seagreen&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Log(Valor Fondo + 1 )&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Frecuencia&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Dsitrbución de Valor Fondo Cierre Dia T&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/0600bcfd7cc0d4625dbbc838be1effd8b53635cf271154b87ca9e8ab3d171d87.png" src="_images/0600bcfd7cc0d4625dbbc838be1effd8b53635cf271154b87ca9e8ab3d171d87.png" />
+</div>
+</div>
+<p>El histograma muestra una distribución sesgada a la derecha con una gran cantidad de valores en cero, sugiriendo la posible mezcla de dos grupos de datos. La transformación logarítmica ayuda a estabilizar la varianza y hacer la distribución más manejable.</p>
+</section>
+<section id="distribucion-de-rentalidades-diaria-mensual-semestral-anual">
+<h3><strong>2.2.6. Distribución de Rentalidades (<em>Diaria, Mensual, Semestral, Anual</em>)</strong><a class="headerlink" href="#distribucion-de-rentalidades-diaria-mensual-semestral-anual" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="c1"># Columnas y títulos</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;RENTABILIDAD_DIARIA&quot;</span><span class="p">,</span> <span class="s2">&quot;RENTABILIDAD_MENSUAL&quot;</span><span class="p">,</span> <span class="s2">&quot;RENTABILIDAD_SEMESTRAL&quot;</span><span class="p">,</span> <span class="s2">&quot;RENTABILIDAD_ANUAL&quot;</span><span class="p">]</span>
+<span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Diaria&quot;</span><span class="p">,</span> <span class="s2">&quot;Mensual&quot;</span><span class="p">,</span> <span class="s2">&quot;Semestral&quot;</span><span class="p">,</span> <span class="s2">&quot;Anual&quot;</span><span class="p">]</span>
+
+<span class="c1"># Crear histogramas con transformación logarítmica</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()):</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">cols</span><span class="p">[</span><span class="n">i</span><span class="p">]]),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;steelblue&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Distribución Logarítmica de Rentabilidad </span><span class="si">{</span><span class="n">titles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;log(1 + </span><span class="si">{</span><span class="n">cols</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>  <span class="c1"># Etiqueta del eje X con la transformación aplicada</span>
+
+<span class="c1"># Ajustar diseño</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/0aa0df0208d810ecbfc354f7e0992265639c02bc978ed1f135b34a4fce5f0158.png" src="_images/0aa0df0208d810ecbfc354f7e0992265639c02bc978ed1f135b34a4fce5f0158.png" />
+</div>
+</div>
+<p>Se observa que en todos los casos la distribución está fuertemente sesgada a la derecha, con una gran concentración de valores cerca de cero y algunos valores extremos.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>En algunas gráficas se utlizó la escala en el eje <span class="math notranslate nohighlight">\(y\)</span> (o <span class="math notranslate nohighlight">\(x\)</span>) para mejorar la visualización de los datos.</p>
+</div>
+</section>
+<section id="total-de-retiros-y-redenciones-por-tipo-de-entidad">
+<h3><strong>2.2.7. Total de Retiros y Redenciones por Tipo de Entidad</strong><a class="headerlink" href="#total-de-retiros-y-redenciones-por-tipo-de-entidad" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Agrupar y calcular la suma por tipo de entidad</span>
+<span class="n">df_grouped</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;NOMBRE_TIPO_ENTIDAD&quot;</span><span class="p">,</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s2">&quot;RETIROS_REDENCIONES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="c1"># Calcular el porcentaje sobre el total</span>
+<span class="n">df_grouped</span><span class="p">[</span><span class="s2">&quot;Porcentaje&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_grouped</span><span class="p">[</span><span class="s2">&quot;RETIROS_REDENCIONES&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">df_grouped</span><span class="p">[</span><span class="s2">&quot;RETIROS_REDENCIONES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span> <span class="o">*</span> <span class="mi">100</span>
+
+<span class="c1"># Ordenar de mayor a menor</span>
+<span class="n">df_grouped</span> <span class="o">=</span> <span class="n">df_grouped</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;Porcentaje&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df_grouped</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;NOMBRE_TIPO_ENTIDAD&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Porcentaje&quot;</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Distribución de Retiros y Redenciones por Tipo de Entidad (%)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Porcentaje (%)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Tipo de Entidad&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<span class="c1"># Agregar etiquetas con los valores de porcentaje en las barras</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">patches</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">get_y</span><span class="p">()</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/d7fc75b79b65996093f54255db9e35201741aeceeda02171066f17fd57c3d0d6.png" src="_images/d7fc75b79b65996093f54255db9e35201741aeceeda02171066f17fd57c3d0d6.png" />
+</div>
+</div>
+<p>El gráfico muestra que las Sociedades Fiduciarias y las Comisionistas de Bolsa de Valores tienen los montos más altos de retiros y redenciones, mientras que las Sociedades Administradoras de Inversión presentan valores significativamente menores.</p>
+</section>
+<section id="aportes-recibidos-por-subtipo-de-negocio">
+<h3><strong>2.2.8. Aportes Recibidos por Subtipo de Negocio</strong><a class="headerlink" href="#aportes-recibidos-por-subtipo-de-negocio" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Agrupar por subtipo de negocio y calcular la suma de aportaciones</span>
+<span class="n">df_grouped</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;NOMBRE_SUBTIPO_PATRIMONIO&quot;</span><span class="p">)[</span><span class="s2">&quot;APORTES_RECIBIDOS&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="c1"># Calcular el porcentaje sobre el total</span>
+<span class="n">df_grouped</span><span class="p">[</span><span class="s2">&quot;Porcentaje&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_grouped</span><span class="p">[</span><span class="s2">&quot;APORTES_RECIBIDOS&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">df_grouped</span><span class="p">[</span><span class="s2">&quot;APORTES_RECIBIDOS&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span> <span class="o">*</span> <span class="mi">100</span>
+
+<span class="c1"># Transformar los datos para que seaborn lo entienda mejor</span>
+<span class="n">df_melted</span> <span class="o">=</span> <span class="n">df_grouped</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">id_vars</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;NOMBRE_SUBTIPO_PATRIMONIO&quot;</span><span class="p">,</span> <span class="s2">&quot;Porcentaje&quot;</span><span class="p">],</span> 
+                            <span class="n">value_vars</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;APORTES_RECIBIDOS&quot;</span><span class="p">],</span> 
+                            <span class="n">var_name</span><span class="o">=</span><span class="s2">&quot;Tipo&quot;</span><span class="p">,</span> <span class="n">value_name</span><span class="o">=</span><span class="s2">&quot;Monto&quot;</span><span class="p">)</span>
+
+<span class="c1"># Crear el gráfico</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df_melted</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;NOMBRE_SUBTIPO_PATRIMONIO&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Monto&quot;</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+
+<span class="c1"># Agregar etiquetas de porcentaje en cada barra</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">patches</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">get_height</span><span class="p">(),</span> 
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">df_grouped</span><span class="p">[</span><span class="s1">&#39;Porcentaje&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">,</span> 
+            <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+
+<span class="c1"># Personalización</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Subtipo de Negocio&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Monto Total&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Distribución Aportes Recibidos por Subtipo de Negocio&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+
+<span class="c1"># Mostrar gráfico</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/7abe74802b2dee99069a3f2ab2a707771c303a336b335602d8732081773c6de5.png" src="_images/7abe74802b2dee99069a3f2ab2a707771c303a336b335602d8732081773c6de5.png" />
+</div>
+</div>
+<p>El gráfico muestra claramente la distribución de los aportes recibidos por cada subtipo de negocio donde el uso de una escala logarítmica en el eje y resalta la diferencia en los montos entre los diferentes subtipos de negocio.</p>
+</section>
+<section id="relacion-entre-valor-total-del-fondo-al-cierre-del-dia-t-y-precio-de-cierre-del-fondo-en-el-dia-t">
+<h3><strong>2.2.9. Relación entre Valor total del fondo al cierre del día T y Precio de cierre del fondo en el día T</strong><a class="headerlink" href="#relacion-entre-valor-total-del-fondo-al-cierre-del-dia-t-y-precio-de-cierre-del-fondo-en-el-dia-t" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;VALOR_FONDO_CIERRE_DIA_T&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;PRECIERRE_FONDO_DIA_T&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;seagreen&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Valor Fondo Cierre&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Precierre&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Relación entre Valor Fondo Cierre y Precierre Fondo&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/c47f6173c4b231161675a4f46a4e1c53a0d35d44f682f4e8ac7a18dfc65b492c.png" src="_images/c47f6173c4b231161675a4f46a4e1c53a0d35d44f682f4e8ac7a18dfc65b492c.png" />
+</div>
+</div>
+<p>El gráfico de dispersión muestra una relación lineal perfecta entre el Valor Fondo Cierre y el Preciere Fondo, ya que el coeficiente de relación es 1. Esto indica que los valores en ambos ejes siguen exactamente la misma tendencia sin desviaciones.</p>
+</section>
+<section id="retiros-y-redenciones-por-mes">
+<h3><strong>2.2.10. Retiros y Redenciones por Mes</strong><a class="headerlink" href="#retiros-y-redenciones-por-mes" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convertir fecha a datetime</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;FECHA_CORTE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;FECHA_CORTE&quot;</span><span class="p">],</span> <span class="n">dayfirst</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
+
+<span class="c1"># Crear columnas de Año y Mes</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;AÑO&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;FECHA_CORTE&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;MES&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;FECHA_CORTE&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span>
+
+<span class="c1"># Agrupar por Año y Mes</span>
+<span class="n">df_grouped</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;AÑO&quot;</span><span class="p">,</span> <span class="s2">&quot;MES&quot;</span><span class="p">])[</span><span class="s2">&quot;RETIROS_REDENCIONES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="c1"># Separar en dos grupos de años</span>
+<span class="n">grupo1</span> <span class="o">=</span> <span class="n">df_grouped</span><span class="p">[</span><span class="n">df_grouped</span><span class="p">[</span><span class="s2">&quot;AÑO&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">2020</span><span class="p">)]</span>
+<span class="n">grupo2</span> <span class="o">=</span> <span class="n">df_grouped</span><span class="p">[</span><span class="n">df_grouped</span><span class="p">[</span><span class="s2">&quot;AÑO&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">2025</span><span class="p">)]</span>
+
+<span class="c1"># Crear figura con dos subgráficos</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Gráfico 1 (2016-2020)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">grupo1</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;MES&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;RETIROS_REDENCIONES&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;AÑO&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Retiros y Redenciones por Mes (2016-2018)&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Mes&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Promedio de Retiros y Redenciones&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">13</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s2">&quot;Ene&quot;</span><span class="p">,</span> <span class="s2">&quot;Feb&quot;</span><span class="p">,</span> <span class="s2">&quot;Mar&quot;</span><span class="p">,</span> <span class="s2">&quot;Abr&quot;</span><span class="p">,</span> <span class="s2">&quot;May&quot;</span><span class="p">,</span> <span class="s2">&quot;Jun&quot;</span><span class="p">,</span> <span class="s2">&quot;Jul&quot;</span><span class="p">,</span> <span class="s2">&quot;Ago&quot;</span><span class="p">,</span> <span class="s2">&quot;Sep&quot;</span><span class="p">,</span> <span class="s2">&quot;Oct&quot;</span><span class="p">,</span> <span class="s2">&quot;Nov&quot;</span><span class="p">,</span> <span class="s2">&quot;Dic&quot;</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Año&quot;</span><span class="p">)</span>
+
+<span class="c1"># Gráfico 2 (2021-2025)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">grupo2</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;MES&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;RETIROS_REDENCIONES&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;AÑO&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;deep&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Retiros y Redenciones por Mes (2019-2021)&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Mes&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">13</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s2">&quot;Ene&quot;</span><span class="p">,</span> <span class="s2">&quot;Feb&quot;</span><span class="p">,</span> <span class="s2">&quot;Mar&quot;</span><span class="p">,</span> <span class="s2">&quot;Abr&quot;</span><span class="p">,</span> <span class="s2">&quot;May&quot;</span><span class="p">,</span> <span class="s2">&quot;Jun&quot;</span><span class="p">,</span> <span class="s2">&quot;Jul&quot;</span><span class="p">,</span> <span class="s2">&quot;Ago&quot;</span><span class="p">,</span> <span class="s2">&quot;Sep&quot;</span><span class="p">,</span> <span class="s2">&quot;Oct&quot;</span><span class="p">,</span> <span class="s2">&quot;Nov&quot;</span><span class="p">,</span> <span class="s2">&quot;Dic&quot;</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Año&quot;</span><span class="p">)</span>
+
+<span class="c1"># Ajustar diseño y mostrar</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/584b947cd33f14c9fabf3bc6a2fa04e959282d928801da110999cddf2a6c9d52.png" src="_images/584b947cd33f14c9fabf3bc6a2fa04e959282d928801da110999cddf2a6c9d52.png" />
+</div>
+</div>
+<p>Se observan variaciones en los patrones entre ambos períodos, con algunas fluctuaciones notables en ciertos meses.</p>
+</section>
+<section id="numero-de-inversionistas-por-subtipo">
+<h3><strong>2.2.11. Numero de Inversionistas por Subtipo</strong><a class="headerlink" href="#numero-de-inversionistas-por-subtipo" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Agrupar por subtipo de negocio y calcular la suma de NUMERO_INVERSIONISTAS</span>
+<span class="n">df_grouped</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;NOMBRE_SUBTIPO_PATRIMONIO&quot;</span><span class="p">)[</span><span class="s2">&quot;NUMERO_INVERSIONISTAS&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="c1"># Calcular el porcentaje sobre el total</span>
+<span class="n">df_grouped</span><span class="p">[</span><span class="s2">&quot;Porcentaje&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_grouped</span><span class="p">[</span><span class="s2">&quot;NUMERO_INVERSIONISTAS&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">df_grouped</span><span class="p">[</span><span class="s2">&quot;NUMERO_INVERSIONISTAS&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span> <span class="o">*</span> <span class="mi">100</span>
+
+<span class="c1"># Transformar los datos para que seaborn lo entienda mejor</span>
+<span class="n">df_melted</span> <span class="o">=</span> <span class="n">df_grouped</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">id_vars</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;NOMBRE_SUBTIPO_PATRIMONIO&quot;</span><span class="p">,</span> <span class="s2">&quot;Porcentaje&quot;</span><span class="p">],</span> 
+                            <span class="n">value_vars</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;NUMERO_INVERSIONISTAS&quot;</span><span class="p">],</span> 
+                            <span class="n">var_name</span><span class="o">=</span><span class="s2">&quot;Tipo&quot;</span><span class="p">,</span> <span class="n">value_name</span><span class="o">=</span><span class="s2">&quot;Monto&quot;</span><span class="p">)</span>
+
+<span class="c1"># Crear el gráfico</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df_melted</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;NOMBRE_SUBTIPO_PATRIMONIO&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Monto&quot;</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+
+<span class="c1"># Agregar etiquetas de porcentaje en cada barra</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">patches</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">get_height</span><span class="p">(),</span> 
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">df_grouped</span><span class="p">[</span><span class="s1">&#39;Porcentaje&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">,</span> 
+            <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+
+<span class="c1"># Personalización</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Subtipo de Negocio&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Monto Total&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Distribución ANUMERO_INVERSIONISTAS por Subtipo de Negocio&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+
+<span class="c1"># Mostrar gráfico</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/2037d5f42ad300c60f6bd6be243c179267a74afd85546a298f0eae0a7adc2ae3.png" src="_images/2037d5f42ad300c60f6bd6be243c179267a74afd85546a298f0eae0a7adc2ae3.png" />
+</div>
+</div>
+<p>Este gráfico de barras muestra la distribución del número de inversionistas por subtipo de negocio. Se observa que la categoría “FIC DE TIPO GENERAL” domina con <span class="math notranslate nohighlight">\(99.5\%\)</span> del total, lo que indica que la mayoría de los inversionistas se concentran en este tipo de fondo.</p>
+</section>
+<section id="valor-del-fondo-al-cierre-del-dia-t-por-mes">
+<h3><strong>2.2.12. Valor del Fondo al cierre del dia T por Mes</strong><a class="headerlink" href="#valor-del-fondo-al-cierre-del-dia-t-por-mes" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convertir fecha a datetime</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;FECHA_CORTE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;FECHA_CORTE&quot;</span><span class="p">],</span> <span class="n">dayfirst</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
+
+<span class="c1"># Crear columnas de Año y Mes</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;AÑO&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;FECHA_CORTE&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;MES&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;FECHA_CORTE&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span>
+
+<span class="c1"># Agrupar por Año y Mes</span>
+<span class="n">df_grouped</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;AÑO&quot;</span><span class="p">,</span> <span class="s2">&quot;MES&quot;</span><span class="p">])[</span><span class="s2">&quot;VALOR_FONDO_CIERRE_DIA_T&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="c1"># Crear figura</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># Gráfico con todos los años</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">df_grouped</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;MES&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;VALOR_FONDO_CIERRE_DIA_T&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;AÑO&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;tab10&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Personalizar etiquetas y título</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;VALOR_FONDO_CIERRE_DIA_T por Mes (2016-2025)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Mes&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Promedio de VALOR_FONDO_CIERRE_DIA_T&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">13</span><span class="p">),</span> <span class="p">[</span><span class="s2">&quot;Ene&quot;</span><span class="p">,</span> <span class="s2">&quot;Feb&quot;</span><span class="p">,</span> <span class="s2">&quot;Mar&quot;</span><span class="p">,</span> <span class="s2">&quot;Abr&quot;</span><span class="p">,</span> <span class="s2">&quot;May&quot;</span><span class="p">,</span> <span class="s2">&quot;Jun&quot;</span><span class="p">,</span> <span class="s2">&quot;Jul&quot;</span><span class="p">,</span> <span class="s2">&quot;Ago&quot;</span><span class="p">,</span> <span class="s2">&quot;Sep&quot;</span><span class="p">,</span> <span class="s2">&quot;Oct&quot;</span><span class="p">,</span> <span class="s2">&quot;Nov&quot;</span><span class="p">,</span> <span class="s2">&quot;Dic&quot;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Año&quot;</span><span class="p">)</span>
+
+<span class="c1"># Mostrar gráfico</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/44107426ff61df6d024b8f762dd378b16254d9b09b795b9383fac887c0ec4150.png" src="_images/44107426ff61df6d024b8f762dd378b16254d9b09b795b9383fac887c0ec4150.png" />
+</div>
+</div>
+<p>El gráfico muestra un crecimiento sostenido del valor del fondo entre 2016 y 2021, con un pico notable en 2020, posiblemente debido a la pandemia, y una estabilización en 2021.</p>
+</section>
+</section>
+<section id="variables-para-el-modelo">
+<h2><strong>2.3. Variables para el Modelo</strong><a class="headerlink" href="#variables-para-el-modelo" title="Link to this heading">#</a></h2>
+<p>En el sector financiero, comprender los factores que influyen en los retiros y redenciones de los fondos de inversión es clave para la gestión de riesgos y la toma de decisiones estratégicas. La pregunta central que buscamos responder es:</p>
+<p>¿Cuáles son las principales variables que impactan el monto de retiros y redenciones en los fondos de inversión?</p>
+<p>Para ello, analizamos el comportamiento de la variable respuesta (<code class="docutils literal notranslate"><span class="pre">RETIROS_REDENCIONES</span></code>), en función de un conjunto de variables predictoras que podrían influir en su variabilidad.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">APORTES_RECIBIDOS</span></code> (cantidad de dinero ingresado)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PRECIERRE_FONDO_DIA_T</span></code> (precio de cierre de la unidad del fondo)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NUMERO_INVERSIONISTAS</span></code> (Número de inversionistas)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TIPO_ENTIDAD</span></code> (tipo de entidad financiera)</p></li>
+</ul>
+<section id="revision-de-multicolinealidad">
+<h3><strong>2.3.1. Revisión de Multicolinealidad</strong><a class="headerlink" href="#revision-de-multicolinealidad" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">statsmodels.stats.outliers_influence</span> <span class="kn">import</span> <span class="n">variance_inflation_factor</span>
+
+
+<span class="c1"># Definir variables predictoras (sin la variable respuesta)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;APORTES_RECIBIDOS&quot;</span><span class="p">,</span> <span class="s2">&quot;TIPO_PARTICIPACION&quot;</span><span class="p">,</span> <span class="s2">&quot;PRECIERRE_FONDO_DIA_T&quot;</span><span class="p">,</span>  <span class="s2">&quot;NUMERO_INVERSIONISTAS&quot;</span><span class="p">,</span> <span class="s2">&quot;TIPO_ENTIDAD&quot;</span><span class="p">]]</span>
+
+<span class="c1"># Agregar una columna de unos para la intersección (sesgo)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">Intercepto</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Calcular el VIF para cada variable</span>
+<span class="n">vif_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">vif_data</span><span class="p">[</span><span class="s2">&quot;Variable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span>
+<span class="n">vif_data</span><span class="p">[</span><span class="s2">&quot;VIF&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">variance_inflation_factor</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">vif_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                Variable       VIF
+0      APORTES_RECIBIDOS  1.665495
+1     TIPO_PARTICIPACION  1.108879
+2  PRECIERRE_FONDO_DIA_T  2.912800
+3  NUMERO_INVERSIONISTAS  2.145563
+4           TIPO_ENTIDAD  1.102285
+5             Intercepto  0.000000
+</pre></div>
+</div>
+</div>
+</div>
+<p>El modelo no parece tener problemas significativos de multicolinealidad, por lo que no es necesario eliminar o transformar variables en este aspecto.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><strong>1. Introducción</strong></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="ModelosPipeline.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><strong>3. Modelos Benchmarks</strong></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset"><strong>2.1. Dataset</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identificacion-na-s"><strong>2.1.1. Identificación NA’s</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#informacion-general"><strong>2.1.2. Información General</strong></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-variables"><strong>2.2. Análisis Variables</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tipo-de-entidad"><strong>2.2.1. Tipo de Entidad</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#principal-compartimento"><strong>2.2.2. Principal Compartimento</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rendimientos-abonados"><strong>2.2.3. Rendimientos Abonados</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#subtipo-de-negocio"><strong>2.2.4. Subtipo  de Negocio</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#valor-del-fondo-al-cerrar-en-el-dia-t"><strong>2.2.5. Valor Del Fondo al Cerrar en el Dia T</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distribucion-de-rentalidades-diaria-mensual-semestral-anual"><strong>2.2.6. Distribución de Rentalidades (<em>Diaria, Mensual, Semestral, Anual</em>)</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#total-de-retiros-y-redenciones-por-tipo-de-entidad"><strong>2.2.7. Total de Retiros y Redenciones por Tipo de Entidad</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aportes-recibidos-por-subtipo-de-negocio"><strong>2.2.8. Aportes Recibidos por Subtipo de Negocio</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relacion-entre-valor-total-del-fondo-al-cierre-del-dia-t-y-precio-de-cierre-del-fondo-en-el-dia-t"><strong>2.2.9. Relación entre Valor total del fondo al cierre del día T y Precio de cierre del fondo en el día T</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retiros-y-redenciones-por-mes"><strong>2.2.10. Retiros y Redenciones por Mes</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#numero-de-inversionistas-por-subtipo"><strong>2.2.11. Numero de Inversionistas por Subtipo</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#valor-del-fondo-al-cierre-del-dia-t-por-mes"><strong>2.2.12. Valor del Fondo al cierre del dia T por Mes</strong></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-para-el-modelo"><strong>2.3. Variables para el Modelo</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#revision-de-multicolinealidad"><strong>2.3.1. Revisión de Multicolinealidad</strong></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Daniella Guerra y Tawny Torres
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
