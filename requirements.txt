@@ -8,3 +8,4 @@ xgboost
 joblib
 statsmodels
 scipy
+jupyter-book
