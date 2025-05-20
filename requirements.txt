@@ -1,1 +1,12 @@
-
+numpy
+pandas
+scikit-learn
+matplotlib
+seaborn
+faiss
+time
+json
+xgboost
+joblib
+statsmodels
+scipy
