@@ -4,8 +4,6 @@ scikit-learn
 matplotlib
 seaborn
 faiss-cpu
-time
-json
 xgboost
 joblib
 statsmodels
