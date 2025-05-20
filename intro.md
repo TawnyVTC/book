@@ -6,7 +6,7 @@
 
 Los Fondos de Inversión Colectiva (FIC) y los Fondos de Capital Privado (FCP) son mecanismos que permiten a varios inversionistas reunir recursos para participar en portafolios diversificados. El comportamiento de los inversionistas, particularmente en cuanto a los **retiros o redenciones**, constituye una variable crítica para la estabilidad del fondo. Estos retiros reflejan decisiones motivadas por factores financieros, psicológicos y contextuales que afectan la sostenibilidad del portafolio.
 
-De acuerdo con la Superintendencia Financiera de Colombia, el valor de un fondo al cierre del día \$t\$ se calcula con base en los recursos aportados, los rendimientos obtenidos y los gastos incurridos \cite{superfinanciera\_valoracion}. A pesar de la disponibilidad de esta información, **la predicción de los retiros diarios sigue siendo un desafío analítico** de alto valor práctico, especialmente para prevenir situaciones de iliquidez.
+De acuerdo con la Superintendencia Financiera de Colombia, el valor de un fondo al cierre del día \$t\$ se calcula con base en los recursos aportados, los rendimientos obtenidos y los gastos incurridos. A pesar de la disponibilidad de esta información, **la predicción de los retiros diarios sigue siendo un desafío analítico** de alto valor práctico, especialmente para prevenir situaciones de iliquidez.
 
 ## 1.2. Objetivo del estudio
 
@@ -38,7 +38,7 @@ Para mejorar el rendimiento y la precisión, se incorporaron técnicas de **opti
 * En el caso de XGBoost, se empleó el método de construcción de árboles **`hist`**, que acelera la búsqueda de divisiones, y se incorporó **early stopping** para evitar sobreajuste mediante detención temprana del entrenamiento.
 * Random Forest fue optimizado mediante ajuste del número de árboles, la profundidad máxima y la selección de características por división.
 
-Cada modelo fue ajustado utilizando una **búsqueda aleatoria de hiperparámetros (`RandomizedSearchCV`)** con validación cruzada (\$k = 3\$), priorizando la métrica \$R^2\$ como criterio de evaluación.
+Cada modelo fue ajustado utilizando una **búsqueda aleatoria de hiperparámetros (`RandomizedSearchCV`)** con validación cruzada k = 3, priorizando la métrica \$R^2\$ como criterio de evaluación.
 
 ```python
 # Fragmento clave del entrenamiento
@@ -62,7 +62,7 @@ search = RandomizedSearchCV(
 
 ### 1.4.2. Modelo ensamblado propuesto: **SQRE-WithdrawPredictor**
 
-Posterior a la evaluación individual, se seleccionaron los dos modelos con mejor desempeño (Random Forest y XGBoost), los cuales fueron integrados mediante un **modelo de stacking** cuyo meta-modelo es una **Regresión Cuantil** enfocada en la mediana (cuantil \$q = 0.5\$).
+Posterior a la evaluación individual, se seleccionaron los dos modelos con mejor desempeño (Random Forest y XGBoost), los cuales fueron integrados mediante un **modelo de stacking** cuyo meta-modelo es una **Regresión Cuantil** enfocada en la mediana (cuantil q = 0.5).
 
 Este modelo, denominado **SQRE-WithdrawPredictor**, busca no sólo minimizar errores promedio, sino también capturar la estructura de colas y la variabilidad condicional, común en los retiros financieros masivos.
 
@@ -70,16 +70,16 @@ Este modelo, denominado **SQRE-WithdrawPredictor**, busca no sólo minimizar err
 
 Los modelos fueron evaluados según las siguientes métricas:
 
-* \$\textbf{RMSE}\$: Raíz del error cuadrático medio
-* \$\textbf{MAE}\$: Error absoluto medio
-* \$\textbf{MAPE}\$: Error porcentual absoluto medio
-* \$\textbf{R^2}\$: Coeficiente de determinación
-* \$\textbf{Jarque-Bera}\$: Normalidad de los residuos
-* \$\textbf{Jlung-Box}\$: Autocorrelación de residuos
+* **RMSE:** Raíz del error cuadrático medio
+* **MAE:** Error absoluto medio
+* **MAPE:** Error porcentual absoluto medio
+* **R^2:** Coeficiente de determinación
+* **Jarque-Bera:** Normalidad de los residuos
+* **Jlung-Box:** Autocorrelación de residuos
 
 
 
-Los resultados obtenidos con el modelo original mostraron un desempeño consistente tanto en el conjunto de entrenamiento como en el de prueba. En entrenamiento, el modelo alcanzó un \$R^2\$ de 0.79. En prueba, el rendimiento se mantuvo estable, con un \$R^2\$ de 0.77, indicando buena capacidad predictiva y generalización para la predicción de retiros financieros diarios.
+Los resultados obtenidos con el modelo original mostraron un desempeño consistente tanto en el conjunto de entrenamiento como en el de prueba. En entrenamiento, el modelo alcanzó un R^2 de 0.79. En prueba, el rendimiento se mantuvo estable, con un R^2 de 0.77, indicando buena capacidad predictiva y generalización para la predicción de retiros financieros diarios.
 
 
 
@@ -87,11 +87,11 @@ Los resultados obtenidos con el modelo original mostraron un desempeño consiste
 
 ### Pregunta central:
 
-> \textit{"¿Cómo influyen los aportes recibidos, el valor del fondo, el número de inversionistas y el tipo de entidad en la cantidad de retiros/redenciones realizadas?"}
+> *"¿Cómo influyen los aportes recibidos, el valor del fondo, el número de inversionistas y el tipo de entidad en la cantidad de retiros/redenciones realizadas?"*
 
 ### Variable respuesta:
 
-**\$\textbf{RETIROS\_REDENCIONES}\$**
+**\$RETIROS\_REDENCIONES\$**
 
 ### Variables predictoras:
 
